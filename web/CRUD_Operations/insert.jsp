@@ -14,39 +14,45 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="navbar.jsp" %>
         <%
-            if (request.getMethod().equals("POST")) {
-                try {
-                    String name = request.getParameter("name");
-                    String number = request.getParameter("number");
-                    int age = Integer.parseInt(request.getParameter("age"));
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    String DB_URL = "jdbc:mysql://localhost:3306/bca-sem-5b";
-                    Connection conn = DriverManager.getConnection(DB_URL, "root", "");
+            String sUser = (String) session.getAttribute("username");
+            if (sUser != null) {
+                if (request.getMethod().equals("POST")) {
+                    try {
+                        String name = request.getParameter("name");
+                        String number = request.getParameter("number");
+                        int age = Integer.parseInt(request.getParameter("age"));
+                        Class.forName("com.mysql.cj.jdbc.Driver");
+                        String DB_URL = "jdbc:mysql://localhost:3306/bca-sem-5b";
+                        Connection conn = DriverManager.getConnection(DB_URL, "root", "");
 
-                    String SQL = "INSERT INTO customers_jsp SET name=?, number=?, age=?";
+                        String SQL = "INSERT INTO customers_jsp SET name=?, number=?, age=?";
 
-                    PreparedStatement stmt = conn.prepareStatement(SQL);
-                    stmt.setString(1, name);
-                    stmt.setString(2, number);
-                    stmt.setInt(3, age);
+                        PreparedStatement stmt = conn.prepareStatement(SQL);
+                        stmt.setString(1, name);
+                        stmt.setString(2, number);
+                        stmt.setInt(3, age);
 
-                    int inserted = stmt.executeUpdate();
+                        int inserted = stmt.executeUpdate();
 
-                    if (inserted == 1) {
-                        response.sendRedirect("CustomerTable.jsp");
+                        if (inserted == 1) {
+                            response.sendRedirect("CustomerTable.jsp");
+                        }
+
+                        stmt.close();
+                        conn.close();
+
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
                     }
-
-                    stmt.close();
-                    conn.close();
-
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
                 }
+            } else {
+                response.sendRedirect("login.jsp?isValid=false");
             }
         %>
         <div class="container mt-4 w-50">
-            <h3 class="my-4">Update</h3>
+            <h3 class="my-4">Register Customer</h3>
             <form method="POST" action="">
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
@@ -66,7 +72,8 @@
                         <input type="text" class="form-control w-50" name="age" id="inputPassword3">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="CustomerTable.jsp"><button type="button" class="btn btn-danger">Cancel</button></a>
             </form>
         </div>
 

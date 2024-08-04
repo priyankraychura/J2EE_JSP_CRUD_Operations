@@ -1,0 +1,32 @@
+body{
+    width: 100%;
+    height: 100vh;
+}
+.userTable{
+    width: 80%;
+    height: 600px;
+    padding: 50px;
+    /*border: 1px solid black;*/
+    background-color: #E2E3E5;
+}
+/* width */
+.userTable::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.userTable::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 5px;
+}
+
+/* Handle */
+.userTable::-webkit-scrollbar-thumb {
+    background: green;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.userTable::-webkit-scrollbar-thumb:hover {
+    background: #b30000;
+}

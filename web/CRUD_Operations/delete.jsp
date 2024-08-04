@@ -14,26 +14,31 @@
     </head>
     <body>
         <%
+            String sUser = (String) session.getAttribute("username");
 
-            try {
-                int CusId =  Integer.parseInt(request.getParameter("id"));
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                String DB_URL = "jdbc:mysql://localhost:3306/bca-sem-5b";
-                Connection conn = DriverManager.getConnection(DB_URL, "root", "");
+            if (sUser != null) {
+                try {
+                    int CusId = Integer.parseInt(request.getParameter("id"));
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    String DB_URL = "jdbc:mysql://localhost:3306/bca-sem-5b";
+                    Connection conn = DriverManager.getConnection(DB_URL, "root", "");
 
-                String SQL = "DELETE FROM customers_jsp WHERE id = ?";
+                    String SQL = "DELETE FROM customers_jsp WHERE id = ?";
 
-                PreparedStatement stmt = conn.prepareStatement(SQL);
-                stmt.setInt(1, CusId);
+                    PreparedStatement stmt = conn.prepareStatement(SQL);
+                    stmt.setInt(1, CusId);
 
-                stmt.executeUpdate();
+                    stmt.executeUpdate();
 
-                stmt.close();
-                conn.close();
-                
-                response.sendRedirect("CustomerTable.jsp");
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+                    stmt.close();
+                    conn.close();
+
+                    response.sendRedirect("CustomerTable.jsp");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                response.sendRedirect("login.jsp?isValid=false");
             }
         %>
     </body>
